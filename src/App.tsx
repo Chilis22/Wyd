@@ -12,8 +12,9 @@ import { OnboardingDataScreen1 } from "./components/OnboardingDataScreen1";
 import { OnboardingDataScreen2 } from "./components/OnboardingDataScreen2";
 import { OnboardingDataScreen3 } from "./components/OnboardingDataScreen3";
 import { OnboardingFinalSummaryScreen } from "./components/OnboardingFinalSummaryScreen";
+import { DashboardScreen } from "./components/DashboardScreen";
 
-type Screen = 'login' | 'onboarding-name' | 'onboarding-goal' | 'onboarding-subgoal' | 'onboarding-frequency' | 'onboarding-experience' | 'onboarding-transition' | 'onboarding-data1' | 'onboarding-data2' | 'onboarding-data3' | 'onboarding-summary' | 'onboarding-final' | 'onboarding-plan' | 'complete';
+type Screen = 'login' | 'onboarding-name' | 'onboarding-goal' | 'onboarding-subgoal' | 'onboarding-frequency' | 'onboarding-experience' | 'onboarding-transition' | 'onboarding-data1' | 'onboarding-data2' | 'onboarding-data3' | 'onboarding-summary' | 'onboarding-final' | 'onboarding-plan' | 'dashboard' | 'complete';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
@@ -75,7 +76,7 @@ export default function App() {
   };
 
   const handleStartAdventure = () => {
-    setCurrentScreen('complete');
+    setCurrentScreen('dashboard');
   };
 
   const renderScreen = () => {
@@ -106,6 +107,8 @@ export default function App() {
         return <OnboardingFinalScreen userName={userName} selectedFrequency={selectedFrequency} onStartAdventure={handleStartAdventure} />;
       case 'onboarding-plan':
         return <OnboardingPlanScreen userName={userName} selectedGoal={selectedGoal} onStartAdventure={handleStartAdventure} />;
+      case 'dashboard':
+        return <DashboardScreen userName={userName} />;
       case 'complete':
         return (
           <div className="flex flex-col items-center justify-center h-full px-8 bg-white">

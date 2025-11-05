@@ -12,9 +12,9 @@ import { OnboardingDataScreen1 } from "./components/OnboardingDataScreen1";
 import { OnboardingDataScreen2 } from "./components/OnboardingDataScreen2";
 import { OnboardingDataScreen3 } from "./components/OnboardingDataScreen3";
 import { OnboardingFinalSummaryScreen } from "./components/OnboardingFinalSummaryScreen";
-import { DashboardScreen } from "./components/DashboardScreen";
+import { MainLayout } from "./components/MainLayout";
 
-type Screen = 'login' | 'onboarding-name' | 'onboarding-goal' | 'onboarding-subgoal' | 'onboarding-frequency' | 'onboarding-experience' | 'onboarding-transition' | 'onboarding-data1' | 'onboarding-data2' | 'onboarding-data3' | 'onboarding-summary' | 'onboarding-final' | 'onboarding-plan' | 'dashboard' | 'complete';
+type Screen = 'login' | 'onboarding-name' | 'onboarding-goal' | 'onboarding-subgoal' | 'onboarding-frequency' | 'onboarding-experience' | 'onboarding-transition' | 'onboarding-data1' | 'onboarding-data2' | 'onboarding-data3' | 'onboarding-summary' | 'onboarding-final' | 'onboarding-plan' | 'main-app';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
@@ -76,7 +76,7 @@ export default function App() {
   };
 
   const handleStartAdventure = () => {
-    setCurrentScreen('dashboard');
+    setCurrentScreen('main-app');
   };
 
   const renderScreen = () => {
@@ -107,37 +107,8 @@ export default function App() {
         return <OnboardingFinalScreen userName={userName} selectedFrequency={selectedFrequency} onStartAdventure={handleStartAdventure} />;
       case 'onboarding-plan':
         return <OnboardingPlanScreen userName={userName} selectedGoal={selectedGoal} onStartAdventure={handleStartAdventure} />;
-      case 'dashboard':
-        return <DashboardScreen userName={userName} />;
-      case 'complete':
-        return (
-          <div className="flex flex-col items-center justify-center h-full px-8 bg-white">
-            <div className="mb-6" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              <h1 className="text-[36px] text-center" style={{ 
-                color: '#D4AF37',
-                fontWeight: '700'
-              }}>
-                ¡Tu aventura comienza!
-              </h1>
-            </div>
-            <p className="text-center mb-8" style={{ 
-              color: '#6B6B6B',
-              fontSize: '15px'
-            }}>
-              Hola {userName}, estamos preparando tu experiencia personalizada para {selectedGoal}.
-            </p>
-            <button
-              onClick={() => setCurrentScreen('login')}
-              className="px-6 py-3 rounded-xl"
-              style={{
-                backgroundColor: '#D4AF37',
-                color: '#FFFFFF'
-              }}
-            >
-              Reiniciar Demo
-            </button>
-          </div>
-        );
+      case 'main-app':
+        return <MainLayout userName={userName} />;
       default:
         return <LoginScreen onLogin={handleLogin} />;
     }

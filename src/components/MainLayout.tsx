@@ -5,9 +5,13 @@ import { CommunityScreen } from "./screens/CommunityScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
 import { FocusCenterScreen } from "./screens/FocusCenterScreen";
 import { AlgorithmGuideScreen } from "./screens/AlgorithmGuideScreen";
+import { FocusTimerScreen } from "./screens/FocusTimerScreen";
+import { CalendarScreen } from "./screens/CalendarScreen";
+import { StatsScreen } from "./screens/StatsScreen";
+import { ChatbotScreen } from "./ChatbotScreen";
 import { Home, ListTodo, Users, User, Sparkles } from "lucide-react";
 
-type AppScreen = 'dashboard' | 'missions' | 'community' | 'profile' | 'focus-center' | 'algorithm-guide';
+type AppScreen = 'dashboard' | 'missions' | 'community' | 'profile' | 'focus-center' | 'algorithm-guide' | 'focus-timer' | 'chatbot' | 'calendar' | 'stats';
 
 interface MainLayoutProps {
   userName: string;
@@ -25,23 +29,39 @@ export function MainLayout({ userName }: MainLayoutProps) {
       case 'community':
         return <CommunityScreen userName={userName} />;
       case 'profile':
-        return <ProfileScreen userName={userName} />;
+        return <ProfileScreen 
+          userName={userName} 
+          onOpenStats={() => setActiveScreen('stats')}
+          onOpenCalendar={() => setActiveScreen('calendar')}
+        />;
       case 'focus-center':
-        return <FocusCenterScreen onOpenAlgorithmGuide={() => setActiveScreen('algorithm-guide')} onBack={() => setActiveScreen('dashboard')} />;
+        return <FocusCenterScreen 
+          onOpenAlgorithmGuide={() => setActiveScreen('algorithm-guide')} 
+          onOpenFocusTimer={() => setActiveScreen('focus-timer')}
+          onBack={() => setActiveScreen('dashboard')} 
+        />;
       case 'algorithm-guide':
         return <AlgorithmGuideScreen onBack={() => setActiveScreen('focus-center')} />;
+      case 'focus-timer':
+        return <FocusTimerScreen onBack={() => setActiveScreen('dashboard')} />;
+      case 'chatbot':
+        return <ChatbotScreen userName={userName} onBack={() => setActiveScreen('dashboard')} />;
+      case 'calendar':
+        return <CalendarScreen onBack={() => setActiveScreen('profile')} />;
+      case 'stats':
+        return <StatsScreen onBack={() => setActiveScreen('profile')} />;
       default:
         return <DashboardScreen userName={userName} onOpenFocusCenter={() => setActiveScreen('focus-center')} />;
     }
   };
 
   // Don't show navigation bar on certain screens
-  const hideNavigation = activeScreen === 'focus-center' || activeScreen === 'algorithm-guide';
+  const hideNavigation = activeScreen === 'focus-center' || activeScreen === 'algorithm-guide' || activeScreen === 'focus-timer' || activeScreen === 'chatbot' || activeScreen === 'calendar' || activeScreen === 'stats';
 
   return (
     <div className="flex flex-col h-full bg-white relative">
       {/* Screen Content */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1">
         {renderScreen()}
       </div>
 
@@ -129,7 +149,7 @@ export function MainLayout({ userName }: MainLayoutProps) {
       {/* Floating Action Button (AI) - Only on main screens */}
       {!hideNavigation && (
         <button
-          onClick={() => setActiveScreen('focus-center')}
+          onClick={() => setActiveScreen('chatbot')}
           className="absolute bottom-[100px] right-6 w-[60px] h-[60px] rounded-full flex items-center justify-center"
           style={{
             backgroundColor: '#D4AF37',

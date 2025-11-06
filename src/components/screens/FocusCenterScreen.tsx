@@ -3,10 +3,11 @@ import { ArrowLeft, BookOpen, Timer, Search, Sparkles } from "lucide-react";
 
 interface FocusCenterScreenProps {
   onOpenAlgorithmGuide: () => void;
+  onOpenFocusTimer: () => void;
   onBack: () => void;
 }
 
-export function FocusCenterScreen({ onOpenAlgorithmGuide, onBack }: FocusCenterScreenProps) {
+export function FocusCenterScreen({ onOpenAlgorithmGuide, onOpenFocusTimer, onBack }: FocusCenterScreenProps) {
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
@@ -126,26 +127,27 @@ export function FocusCenterScreen({ onOpenAlgorithmGuide, onBack }: FocusCenterS
           </button>
 
           {/* Focus Timer Button */}
-          <div
+          <button
+            onClick={onOpenFocusTimer}
             className="rounded-xl p-5 text-left w-full"
             style={{
-              backgroundColor: '#F5F5F5',
-              border: '2px solid #E5E5E5',
-              opacity: 0.6
+              backgroundColor: '#FFFFFF',
+              border: '2px solid #D4AF37',
+              transition: 'all 0.2s'
             }}
           >
             <div className="flex items-start gap-4">
               <div 
                 className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{
-                  backgroundColor: '#E5E5E5'
+                  backgroundColor: '#FFF9E6'
                 }}
               >
-                <Timer className="w-6 h-6" style={{ color: '#6B6B6B' }} />
+                <Timer className="w-6 h-6" style={{ color: '#D4AF37' }} />
               </div>
               <div className="flex-1">
                 <h4 style={{ 
-                  color: '#6B6B6B',
+                  color: '#1F1F1F',
                   fontSize: '16px',
                   fontWeight: '600',
                   marginBottom: '4px'
@@ -162,17 +164,17 @@ export function FocusCenterScreen({ onOpenAlgorithmGuide, onBack }: FocusCenterS
                 <div 
                   className="inline-block mt-2 px-2 py-1 rounded"
                   style={{
-                    backgroundColor: '#6B6B6B',
+                    backgroundColor: '#D4AF37',
                     fontSize: '11px',
                     color: '#FFFFFF',
                     fontWeight: '600'
                   }}
                 >
-                  PRÓXIMAMENTE
+                  DISPONIBLE
                 </div>
               </div>
             </div>
-          </div>
+          </button>
 
           {/* Assisted Search Button */}
           <div

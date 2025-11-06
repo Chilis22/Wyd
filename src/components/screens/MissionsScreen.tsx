@@ -1,8 +1,77 @@
 import { ScrollArea } from "../ui/scroll-area";
 import { Checkbox } from "../ui/checkbox";
 import { Dumbbell, Apple, Timer, Target, Lock } from "lucide-react";
+import { useState } from "react";
+import { MissionVerificationModal } from "../MissionVerificationModal";
+
+type VerificationType = 'manual' | 'focus_mode' | 'algorithm_guide';
+
+interface Mission {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  verificationType: VerificationType;
+  isActive: boolean;
+}
 
 export function MissionsScreen() {
+  const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
+  
+  const missions: Mission[] = [
+    {
+      id: 'mission-1',
+      title: 'Misión 1: Día de Pecho/Tríceps',
+      description: 'Completa tu rutina de pecho y tríceps en el gimnasio',
+      icon: <Dumbbell className="w-4 h-4" style={{ color: '#D4AF37' }} />,
+      verificationType: 'focus_mode',
+      isActive: true
+    },
+    {
+      id: 'mission-2',
+      title: 'Misión 2: Día de Pierna',
+      description: 'Entrena piernas con tu rutina personalizada',
+      icon: <Dumbbell className="w-4 h-4" style={{ color: '#D4AF37' }} />,
+      verificationType: 'focus_mode',
+      isActive: true
+    },
+    {
+      id: 'mission-3',
+      title: 'Misión 3: Optimiza tu TikTok',
+      description: 'Re-entrena el algoritmo para contenido motivacional',
+      icon: <Target className="w-4 h-4" style={{ color: '#6B6B6B' }} />,
+      verificationType: 'algorithm_guide',
+      isActive: false
+    },
+    {
+      id: 'mission-4',
+      title: 'Misión 4: Registrar comida del día',
+      description: 'Mantén un registro de tus comidas principales',
+      icon: <Apple className="w-4 h-4" style={{ color: '#6B6B6B' }} />,
+      verificationType: 'manual',
+      isActive: false
+    },
+    {
+      id: 'mission-5',
+      title: 'Misión 5: Beber 2L de agua',
+      description: 'Mantente hidratado durante el día',
+      icon: <Timer className="w-4 h-4" style={{ color: '#6B6B6B' }} />,
+      verificationType: 'manual',
+      isActive: false
+    }
+  ];
+  
+  const getVerificationLabel = (type: VerificationType) => {
+    switch (type) {
+      case 'focus_mode':
+        return 'Verificación: Modo Enfoque';
+      case 'algorithm_guide':
+        return 'Verificación: Guía de Algoritmo';
+      case 'manual':
+        return 'Verificación: Manual';
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
@@ -31,246 +100,48 @@ export function MissionsScreen() {
       {/* Missions List */}
       <ScrollArea className="flex-1 px-6 py-4">
         <div className="flex flex-col gap-3">
-          {/* Mission 1 - Active */}
-          <div 
-            className="rounded-xl p-4 flex items-start gap-3"
-            style={{
-              backgroundColor: '#FFF9E6',
-              border: '2px solid #D4AF37'
-            }}
-          >
-            <Checkbox 
-              id="mission-1" 
-              className="mt-1"
+          {missions.map((mission) => (
+            <button
+              key={mission.id}
+              onClick={() => setSelectedMission(mission)}
+              className="rounded-xl p-4 flex items-start gap-3 text-left w-full cursor-pointer transition-all hover:scale-[1.02]"
               style={{
-                borderColor: '#D4AF37'
+                backgroundColor: mission.isActive ? '#FFF9E6' : '#FFFFFF',
+                border: mission.isActive ? '2px solid #D4AF37' : '2px solid #E5E5E5'
               }}
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Dumbbell className="w-4 h-4" style={{ color: '#D4AF37' }} />
-                <label 
-                  htmlFor="mission-1"
-                  style={{ 
+            >
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  {mission.icon}
+                  <span style={{ 
                     color: '#1F1F1F',
                     fontSize: '15px',
                     fontWeight: '600'
-                  }}
-                >
-                  Misión 1: Día de Pecho/Tríceps
-                </label>
-              </div>
-              <p style={{ 
-                color: '#6B6B6B',
-                fontSize: '13px',
-                marginBottom: '8px'
-              }}>
-                Completa tu rutina de pecho y tríceps en el gimnasio
-              </p>
-              <div 
-                className="inline-block px-2 py-1 rounded"
-                style={{
-                  backgroundColor: '#D4AF37',
-                  color: '#FFFFFF',
-                  fontSize: '11px',
-                  fontWeight: '600'
-                }}
-              >
-                Verificación: Modo Enfoque
-              </div>
-            </div>
-          </div>
-
-          {/* Mission 2 - Active */}
-          <div 
-            className="rounded-xl p-4 flex items-start gap-3"
-            style={{
-              backgroundColor: '#FFF9E6',
-              border: '2px solid #D4AF37'
-            }}
-          >
-            <Checkbox 
-              id="mission-2" 
-              className="mt-1"
-              style={{
-                borderColor: '#D4AF37'
-              }}
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Dumbbell className="w-4 h-4" style={{ color: '#D4AF37' }} />
-                <label 
-                  htmlFor="mission-2"
-                  style={{ 
-                    color: '#1F1F1F',
-                    fontSize: '15px',
+                  }}>
+                    {mission.title}
+                  </span>
+                </div>
+                <p style={{ 
+                  color: '#6B6B6B',
+                  fontSize: '13px',
+                  marginBottom: '8px'
+                }}>
+                  {mission.description}
+                </p>
+                <div 
+                  className="inline-block px-2 py-1 rounded"
+                  style={{
+                    backgroundColor: mission.isActive ? '#D4AF37' : '#6B6B6B',
+                    color: '#FFFFFF',
+                    fontSize: '11px',
                     fontWeight: '600'
                   }}
                 >
-                  Misión 2: Día de Pierna
-                </label>
+                  {getVerificationLabel(mission.verificationType)}
+                </div>
               </div>
-              <p style={{ 
-                color: '#6B6B6B',
-                fontSize: '13px',
-                marginBottom: '8px'
-              }}>
-                Entrena piernas con tu rutina personalizada
-              </p>
-              <div 
-                className="inline-block px-2 py-1 rounded"
-                style={{
-                  backgroundColor: '#D4AF37',
-                  color: '#FFFFFF',
-                  fontSize: '11px',
-                  fontWeight: '600'
-                }}
-              >
-                Verificación: Modo Enfoque
-              </div>
-            </div>
-          </div>
-
-          {/* Mission 3 - TikTok Optimization */}
-          <div 
-            className="rounded-xl p-4 flex items-start gap-3"
-            style={{
-              backgroundColor: '#FFFFFF',
-              border: '2px solid #E5E5E5'
-            }}
-          >
-            <Checkbox 
-              id="mission-3" 
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-4 h-4" style={{ color: '#6B6B6B' }} />
-                <label 
-                  htmlFor="mission-3"
-                  style={{ 
-                    color: '#1F1F1F',
-                    fontSize: '15px',
-                    fontWeight: '600'
-                  }}
-                >
-                  Misión 3: Optimiza tu TikTok
-                </label>
-              </div>
-              <p style={{ 
-                color: '#6B6B6B',
-                fontSize: '13px',
-                marginBottom: '8px'
-              }}>
-                Re-entrena el algoritmo para contenido motivacional
-              </p>
-              <div 
-                className="inline-block px-2 py-1 rounded"
-                style={{
-                  backgroundColor: '#6B6B6B',
-                  color: '#FFFFFF',
-                  fontSize: '11px',
-                  fontWeight: '600'
-                }}
-              >
-                Verificación: Guía de Algoritmo
-              </div>
-            </div>
-          </div>
-
-          {/* Mission 4 - Food Logging */}
-          <div 
-            className="rounded-xl p-4 flex items-start gap-3"
-            style={{
-              backgroundColor: '#FFFFFF',
-              border: '2px solid #E5E5E5'
-            }}
-          >
-            <Checkbox 
-              id="mission-4" 
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Apple className="w-4 h-4" style={{ color: '#6B6B6B' }} />
-                <label 
-                  htmlFor="mission-4"
-                  style={{ 
-                    color: '#1F1F1F',
-                    fontSize: '15px',
-                    fontWeight: '600'
-                  }}
-                >
-                  Misión 4: Registrar comida del día
-                </label>
-              </div>
-              <p style={{ 
-                color: '#6B6B6B',
-                fontSize: '13px',
-                marginBottom: '8px'
-              }}>
-                Mantén un registro de tus comidas principales
-              </p>
-              <div 
-                className="inline-block px-2 py-1 rounded"
-                style={{
-                  backgroundColor: '#6B6B6B',
-                  color: '#FFFFFF',
-                  fontSize: '11px',
-                  fontWeight: '600'
-                }}
-              >
-                Verificación: Manual
-              </div>
-            </div>
-          </div>
-
-          {/* Mission 5 - Daily Hydration */}
-          <div 
-            className="rounded-xl p-4 flex items-start gap-3"
-            style={{
-              backgroundColor: '#FFFFFF',
-              border: '2px solid #E5E5E5'
-            }}
-          >
-            <Checkbox 
-              id="mission-5" 
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Timer className="w-4 h-4" style={{ color: '#6B6B6B' }} />
-                <label 
-                  htmlFor="mission-5"
-                  style={{ 
-                    color: '#1F1F1F',
-                    fontSize: '15px',
-                    fontWeight: '600'
-                  }}
-                >
-                  Misión 5: Beber 2L de agua
-                </label>
-              </div>
-              <p style={{ 
-                color: '#6B6B6B',
-                fontSize: '13px',
-                marginBottom: '8px'
-              }}>
-                Mantente hidratado durante el día
-              </p>
-              <div 
-                className="inline-block px-2 py-1 rounded"
-                style={{
-                  backgroundColor: '#6B6B6B',
-                  color: '#FFFFFF',
-                  fontSize: '11px',
-                  fontWeight: '600'
-                }}
-              >
-                Verificación: Manual
-              </div>
-            </div>
-          </div>
+            </button>
+          ))}
 
           {/* Locked Missions Section */}
           <div className="mt-6 mb-4">
@@ -312,6 +183,21 @@ export function MissionsScreen() {
           </div>
         </div>
       </ScrollArea>
+      
+      {/* Mission Verification Modal */}
+      {selectedMission && (
+        <MissionVerificationModal
+          isOpen={selectedMission !== null}
+          missionTitle={selectedMission.title}
+          verificationType={selectedMission.verificationType}
+          onClose={() => setSelectedMission(null)}
+          onStartVerification={() => {
+            // Handle verification action
+            console.log('Starting verification for:', selectedMission.id);
+            setSelectedMission(null);
+          }}
+        />
+      )}
     </div>
   );
 }

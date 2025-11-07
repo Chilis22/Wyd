@@ -1,20 +1,23 @@
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { Sparkles, ArrowDown } from "lucide-react";
+import { Sparkles, Plus } from "lucide-react";
 import { motion } from "motion/react";
+import { useState } from "react";
 
-interface AlgorithmGuideScreenProps {
+interface AlgorithmGuideScreen_Step2Props {
   onBack: () => void;
-  onNext: () => void;
+  onComplete: () => void;
 }
 
-export function AlgorithmGuideScreen({ onBack, onNext }: AlgorithmGuideScreenProps) {
+export function AlgorithmGuideScreen_Step2({ onBack, onComplete }: AlgorithmGuideScreen_Step2Props) {
+  const [keywords] = useState(['fitness', 'gym', 'motivación', 'entrenamiento']);
+
   return (
     <div className="relative h-full w-full overflow-hidden">
-      {/* Background Image - Simulated TikTok Settings Screen */}
+      {/* Background Image - Simulated TikTok Keyword Filter Screen */}
       <div className="absolute inset-0">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1755182334060-1578c6cac201?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWFydHBob25lJTIwc2V0dGluZ3MlMjBzY3JlZW58ZW58MXx8fHwxNzYyNTM3OTAwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-          alt="TikTok Settings"
+          src="https://images.unsplash.com/photo-1605108222700-0d605d9ebafe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBpbnRlcmZhY2V8ZW58MXx8fHwxNzYyNDQ1NTcxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+          alt="TikTok Keyword Filter"
           className="w-full h-full object-cover"
         />
         {/* Dark Overlay */}
@@ -64,10 +67,39 @@ export function AlgorithmGuideScreen({ onBack, onNext }: AlgorithmGuideScreenPro
                 style={{ 
                   color: '#FFFFFF',
                   fontSize: '15px',
+                  lineHeight: '1.5',
+                  marginBottom: '12px'
+                }}
+              >
+                ¡Genial! Ahora, añade palabras clave de tus metas. Aquí hay algunas sugerencias:
+              </p>
+              
+              {/* Keyword Suggestions */}
+              <div className="flex flex-wrap gap-2 mb-3">
+                {keywords.map((keyword) => (
+                  <div 
+                    key={keyword}
+                    className="px-3 py-1.5 rounded-full"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      color: '#D4AF37',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    {keyword}
+                  </div>
+                ))}
+              </div>
+
+              <p 
+                style={{ 
+                  color: '#FFFFFF',
+                  fontSize: '15px',
                   lineHeight: '1.5'
                 }}
               >
-                ¡Perfecto! Estamos en las 'Preferencias'. Toca 'Filtrar palabras clave de videos' para continuar.
+                Toca 'Añadir' cuando termines.
               </p>
             </div>
           </div>
@@ -85,14 +117,13 @@ export function AlgorithmGuideScreen({ onBack, onNext }: AlgorithmGuideScreenPro
         />
       </div>
 
-      {/* Pulsating Hotspot - Center (clickable area) */}
+      {/* Pulsating Hotspot - Bottom Right (Add Button) */}
       <button
-        onClick={onNext}
+        onClick={onComplete}
         className="absolute z-30"
         style={{
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
+          bottom: '15%',
+          right: '10%'
         }}
       >
         {/* Pulsating Circle */}
@@ -126,7 +157,7 @@ export function AlgorithmGuideScreen({ onBack, onNext }: AlgorithmGuideScreenPro
               border: '4px solid #FFFFFF'
             }}
           >
-            <ArrowDown className="w-10 h-10" style={{ color: '#FFFFFF' }} />
+            <Plus className="w-10 h-10" style={{ color: '#FFFFFF' }} />
           </div>
         </motion.div>
 
@@ -146,37 +177,66 @@ export function AlgorithmGuideScreen({ onBack, onNext }: AlgorithmGuideScreenPro
               whiteSpace: 'nowrap'
             }}
           >
-            Toca aquí
+            Añadir
           </p>
         </div>
       </button>
 
-      {/* Directional Arrow Pointing to Hotspot */}
+      {/* Decorative Box pointing to keyword area */}
       <motion.div
         className="absolute z-20"
         style={{
-          top: '40%',
-          left: '20%'
+          top: '45%',
+          left: '10%',
+          right: '10%',
+          height: '120px',
+          border: '3px dashed #D4AF37',
+          borderRadius: '16px',
+          backgroundColor: 'rgba(212, 175, 55, 0.1)',
+          pointerEvents: 'none'
         }}
         animate={{
-          y: [0, 10, 0],
+          opacity: [0.6, 1, 0.6],
         }}
         transition={{
-          duration: 1.5,
+          duration: 2,
           repeat: Infinity,
           ease: "easeInOut"
         }}
       >
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-          <path
-            d="M10 10 L40 30 L10 50"
-            stroke="#D4AF37"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-        </svg>
+        {/* Corner accents */}
+        <div 
+          className="absolute top-0 left-0 w-4 h-4"
+          style={{
+            borderTop: '4px solid #D4AF37',
+            borderLeft: '4px solid #D4AF37',
+            borderRadius: '4px 0 0 0'
+          }}
+        />
+        <div 
+          className="absolute top-0 right-0 w-4 h-4"
+          style={{
+            borderTop: '4px solid #D4AF37',
+            borderRight: '4px solid #D4AF37',
+            borderRadius: '0 4px 0 0'
+          }}
+        />
+        <div 
+          className="absolute bottom-0 left-0 w-4 h-4"
+          style={{
+            borderBottom: '4px solid #D4AF37',
+            borderLeft: '4px solid #D4AF37',
+            borderRadius: '0 0 0 4px'
+          }}
+        />
+        <div 
+          className="absolute bottom-0 right-0 w-4 h-4"
+          style={{
+            borderBottom: '4px solid #D4AF37',
+            borderRight: '4px solid #D4AF37',
+            borderRadius: '0 0 4px 0'
+          }}
+        />
       </motion.div>
 
       {/* Back Button */}
@@ -195,11 +255,11 @@ export function AlgorithmGuideScreen({ onBack, onNext }: AlgorithmGuideScreenPro
       <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2">
         <div 
           className="w-8 h-1.5 rounded-full"
-          style={{ backgroundColor: '#D4AF37' }}
+          style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
         />
         <div 
           className="w-8 h-1.5 rounded-full"
-          style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+          style={{ backgroundColor: '#D4AF37' }}
         />
       </div>
 

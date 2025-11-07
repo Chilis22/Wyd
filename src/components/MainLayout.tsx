@@ -4,14 +4,16 @@ import { MissionsScreen } from "./screens/MissionsScreen";
 import { CommunityScreen } from "./screens/CommunityScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
 import { FocusCenterScreen } from "./screens/FocusCenterScreen";
+import { FocusPermissionScreen } from "./screens/FocusPermissionScreen";
 import { AlgorithmGuideScreen } from "./screens/AlgorithmGuideScreen";
+import { AlgorithmGuideScreen_Step2 } from "./screens/AlgorithmGuideScreen_Step2";
 import { FocusTimerScreen } from "./screens/FocusTimerScreen";
 import { CalendarScreen } from "./screens/CalendarScreen";
 import { StatsScreen } from "./screens/StatsScreen";
 import { ChatbotScreen } from "./ChatbotScreen";
 import { Home, ListTodo, Users, User, Sparkles } from "lucide-react";
 
-type AppScreen = 'dashboard' | 'missions' | 'community' | 'profile' | 'focus-center' | 'algorithm-guide' | 'focus-timer' | 'chatbot' | 'calendar' | 'stats';
+type AppScreen = 'dashboard' | 'missions' | 'community' | 'profile' | 'focus-center' | 'focus-permission' | 'algorithm-guide' | 'algorithm-guide-step2' | 'focus-timer' | 'chatbot' | 'calendar' | 'stats';
 
 interface MainLayoutProps {
   userName: string;
@@ -36,12 +38,25 @@ export function MainLayout({ userName }: MainLayoutProps) {
         />;
       case 'focus-center':
         return <FocusCenterScreen 
-          onOpenAlgorithmGuide={() => setActiveScreen('algorithm-guide')} 
+          onOpenAlgorithmGuide={() => setActiveScreen('focus-permission')} 
           onOpenFocusTimer={() => setActiveScreen('focus-timer')}
           onBack={() => setActiveScreen('dashboard')} 
         />;
+      case 'focus-permission':
+        return <FocusPermissionScreen 
+          onDismiss={() => setActiveScreen('focus-center')}
+          onAccept={() => setActiveScreen('algorithm-guide')}
+        />;
       case 'algorithm-guide':
-        return <AlgorithmGuideScreen onBack={() => setActiveScreen('focus-center')} />;
+        return <AlgorithmGuideScreen 
+          onBack={() => setActiveScreen('focus-permission')} 
+          onNext={() => setActiveScreen('algorithm-guide-step2')}
+        />;
+      case 'algorithm-guide-step2':
+        return <AlgorithmGuideScreen_Step2 
+          onBack={() => setActiveScreen('algorithm-guide')}
+          onComplete={() => setActiveScreen('focus-center')}
+        />;
       case 'focus-timer':
         return <FocusTimerScreen onBack={() => setActiveScreen('dashboard')} />;
       case 'chatbot':
@@ -56,7 +71,7 @@ export function MainLayout({ userName }: MainLayoutProps) {
   };
 
   // Don't show navigation bar on certain screens
-  const hideNavigation = activeScreen === 'focus-center' || activeScreen === 'algorithm-guide' || activeScreen === 'focus-timer' || activeScreen === 'chatbot' || activeScreen === 'calendar' || activeScreen === 'stats';
+  const hideNavigation = activeScreen === 'focus-center' || activeScreen === 'focus-permission' || activeScreen === 'algorithm-guide' || activeScreen === 'algorithm-guide-step2' || activeScreen === 'focus-timer' || activeScreen === 'chatbot' || activeScreen === 'calendar' || activeScreen === 'stats';
 
   return (
     <div className="flex flex-col h-full bg-white relative">

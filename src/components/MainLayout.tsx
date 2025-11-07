@@ -49,8 +49,7 @@ export function MainLayout({ userName }: MainLayoutProps) {
         />;
       case 'algorithm-guide':
         return <AlgorithmGuideScreen 
-          onBack={() => setActiveScreen('focus-permission')} 
-          onNext={() => setActiveScreen('algorithm-guide-step2')}
+          onBack={() => setActiveScreen('focus-center')}
         />;
       case 'algorithm-guide-step2':
         return <AlgorithmGuideScreen_Step2 
@@ -76,7 +75,7 @@ export function MainLayout({ userName }: MainLayoutProps) {
   return (
     <div className="flex flex-col h-full bg-white relative">
       {/* Screen Content */}
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         {renderScreen()}
       </div>
 
